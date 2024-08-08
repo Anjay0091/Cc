@@ -1,0 +1,64 @@
+# ⤷ Dev by : @J_A_C_K_9
+from telebot import types
+from config import *
+import telebot
+import threading
+import time
+import random
+
+bot = telebot.TeleBot(TOKEN)
+CHANNEL_NAME = -1002183682655
+
+# ⤷ Dev by : @J_A_C_K_9
+
+stickers = ["😴", "✨", "☠️", "🔥", "🎉", "🙈"]
+
+def send_file_lines_to_channel(cc):
+    with open(cc, "r") as file:
+        for line in file:
+            cc = line.strip()
+            bin_number = cc.split('|')[0][:6]
+            sticker = random.choice(stickers)  
+            message = f"""
+            <b>
+• 𝘛𝘌𝘚𝘛 𝘚𝘊𝘙𝘈𝘗𝘗𝘌𝘙 |{sticker}」  
+            
+• 𝘊𝘊 ⇾ <code>{cc}</code>
+
+• 𝘉𝘐𝘕 ⇾ {bin_number}
+           
+• 𝘋𝘌𝘝 ⇾ @Hi_cheat1
+</b>
+"""
+            markup = types.InlineKeyboardMarkup()
+            dev_button = types.InlineKeyboardButton(text="DEV 🧑‍💻", url="https://t.me/zaher_ddos")
+            dev_channel_button = types.InlineKeyboardButton(text="DEV CHANNEL 🧑‍💻", url="https://t.me/zaher_ddos")
+            markup.add(dev_button, dev_channel_button)
+            with open("scr.jpg", "rb") as photo:
+                bot.send_photo(CHANNEL_NAME, photo, caption=message, parse_mode="html", reply_markup=markup)
+            print(cc)
+            time.sleep(3)  
+            # ⤷ Dev by : @J_A_C_K_9
+def send_welcome_message(message):
+    user_name = message.chat.first_name
+    welcome_message = f"Welcome {user_name} To \n{{ 𝘛𝘌𝘚𝘛 𝘚𝘊𝘙𝘈𝘗𝘗𝘌𝘙 }}"
+    with open("welc.jpg", "rb") as photo:
+        bot.send_photo(message.chat.id, photo, caption=welcome_message, parse_mode="html")
+
+@bot.message_handler(commands=['start'])
+def handle_start(message):
+    send_welcome_message(message)
+
+def enviar_ccs_continuamente():
+    while True:
+        send_file_lines_to_channel("ccs.txt")
+        time.sleep(3)  
+
+t = threading.Thread(target=enviar_ccs_continuamente)
+t.start()
+
+def recibir_msg():
+    bot.infinity_polling()
+
+recibir_msg()
+# ⤷ Dev by : @J_A_C_K_9
